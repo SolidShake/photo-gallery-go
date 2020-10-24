@@ -2,7 +2,6 @@ package response
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/SolidShake/photo-gallery-go/internal/db"
@@ -24,6 +23,8 @@ func RenderResponse(w http.ResponseWriter, message string, statusCode int) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	w.Write(data)
 }
@@ -37,13 +38,14 @@ func RenderPhotoUrlResponse(w http.ResponseWriter, r *http.Request, hash string,
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	w.Write(data)
 }
 
 func RenderPhotosResponse(w http.ResponseWriter, r *http.Request, images []db.Image, statusCode int) {
 	imagesResponseBody := make([]ResponseUrlBody, len(images))
-	log.Println(images)
 	for i, img := range images {
 		imagesResponseBody[i].PhotoUrl = r.Host + "/photos/" + img.Filename
 		imagesResponseBody[i].PhotoPreviewUrl = r.Host + "/photos/" + img.Filename + "/preview"
@@ -54,6 +56,7 @@ func RenderPhotosResponse(w http.ResponseWriter, r *http.Request, images []db.Im
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	w.Write(data)
 }
