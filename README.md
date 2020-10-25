@@ -47,7 +47,7 @@
 
 ### Request
 
-`POST /photos/upload/`
+`POST /photos/upload`
 
     curl --location --request POST 'http://localhost:8081/photos/upload' --header 'Content-Type: application/json' --form 'uploadFile=@/home/user/downloads/file.jpg'
 
